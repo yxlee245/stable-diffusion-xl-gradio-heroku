@@ -1,3 +1,5 @@
+import os
+
 import gradio as gr
 from PIL import Image
 
@@ -67,4 +69,4 @@ with gr.Blocks() as app:
         outputs=[output_image],
     )
 
-app.launch()
+app.launch(server_port=int(os.getenv("PORT", "7860")))
