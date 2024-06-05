@@ -2,7 +2,7 @@
 
 ## About this Repo
 
-This repo contains code to run a chatbot app using Gradio, that can do text-to-image generation using the Stable Diffusion XL 1.0 [base](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) and [refiner](https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0) models from Huggingface. The text input is done in chat dialog format, for users to refine their prompts to the SDXL 1.0 without needing to reset the prompts entirely.
+This repo contains code to run a chatbot app using Gradio, that can do text-to-image generation using the Stable Diffusion XL 1.0 [base](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) and [refiner](https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0) models from Huggingface. The text input is done in chat dialog format, for users to refine their prompts to the SDXL 1.0 without needing to reset the prompts entirely. Model weights of SDXL are not downloaded in this app, but rather, inference requests to the models are sent to Huggingface Hub via the [Huggingface Hub Python package](https://pypi.org/project/huggingface-hub/).
 
 ![sdxl gradio example](./images/sdxl-gradio.gif)
 
