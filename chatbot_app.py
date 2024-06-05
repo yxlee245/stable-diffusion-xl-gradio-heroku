@@ -1,4 +1,5 @@
 import os
+from typing import Iterable, List, Tuple
 
 import gradio as gr
 from PIL import Image
@@ -6,7 +7,23 @@ from PIL import Image
 from src.inference import generate_image_from_text
 
 
-def return_output_image(huggingface_token, message, chat_history) -> Image.Image:
+def return_output_image(
+    huggingface_token: str, message: str, chat_history: List[Iterable[str]]
+) -> Image.Image:
+    """Event function to accept prompts from user and return generated image
+
+    Args:
+        huggingface_token (str): Huggingface Access Token needed to access SDXL models on Huggingface Hub
+        message (str): New message from user
+        chat_history (List[Iterable[str]]): Past messages from user and chatbot, in the form
+            [[user_msg_1, bot_msg_1], [user_msg_2, bot_msg_2], ...]
+
+    Raises:
+        gr.Error: Huggingface Access Token not provided by user
+
+    Returns:
+        Image.Image: Generated image from the SDXL models
+    """
     if huggingface_token == "":
         raise gr.Error("Please enter a Huggingface token")
     messages_for_prompt = [past_user_msg for past_user_msg, _ in chat_history] + [
@@ -17,13 +34,36 @@ def return_output_image(huggingface_token, message, chat_history) -> Image.Image
     return pil_image
 
 
-def return_chatbot_message(message, chat_history):
+def return_chatbot_message(
+    message: str, chat_history: List[Iterable[str]]
+) -> Tuple[str, List[Iterable[str]]]:
+    """Event function to return messages in chatbot windowm
+
+    Args:
+        message (str): New message from user
+        chat_history (List[Iterable[str]]): Past messages from user and chatbot, in the form
+            [[user_msg_1, bot_msg_1], [user_msg_2, bot_msg_2], ...]
+
+    Returns:
+        Tuple[str, List[Iterable[str]]]: Tuple containing
+            1. Empty string to be rendered in chat textbox
+            2. Updated chat history to be rendered in conversation window
+    """
     bot_message = "Generating image based on past message(s)..."
     chat_history.append((message, bot_message))
     return "", chat_history
 
 
-def undo_chatbot_history(chat_history):
+def undo_chatbot_history(chat_history: List[Iterable[str]]) -> List[Iterable[str]]:
+    """Event function to undo the last pair of messages in the conversation window
+
+    Args:
+        chat_history (List[Iterable[str]]): Past messages from user and chatbot, in the form
+            [[user_msg_1, bot_msg_1], [user_msg_2, bot_msg_2], ...]
+
+    Returns:
+        List[Iterable[str]]: Updated chat history with the last pair of messages removed
+    """
     if len(chat_history) > 0:
         chat_history.pop()
     return chat_history
